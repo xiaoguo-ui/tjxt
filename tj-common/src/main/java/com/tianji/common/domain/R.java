@@ -10,6 +10,9 @@ import static com.tianji.common.constants.ErrorInfo.Code.FAILED;
 import static com.tianji.common.constants.ErrorInfo.Code.SUCCESS;
 import static com.tianji.common.constants.ErrorInfo.Msg.OK;
 
+/**
+ * 通用响应结果类，泛型 T 来表示响应数据的类型。
+ */
 @Data
 @ApiModel(description = "通用响应结果")
 public class R<T> {
@@ -22,18 +25,22 @@ public class R<T> {
     @ApiModelProperty(value = "请求id", example = "1af123c11412e")
     private String requestId;
 
+    // 创建一个没有数据的成功响应
     public static R<Void> ok() {
         return new R<Void>(SUCCESS, OK, null);
     }
 
+    // 创建一个包含数据的成功响应，二次泛型，可以自己定义
     public static <T> R<T> ok(T data) {
         return new R<>(SUCCESS, OK, data);
     }
 
+    // 创建一个失败的响应。
     public static <T> R<T> error(String msg) {
         return new R<>(FAILED, msg, null);
     }
 
+    // 创建一个失败的响应，可以指定状态码
     public static <T> R<T> error(int code, String msg) {
         return new R<>(code, msg, null);
     }
@@ -48,7 +55,7 @@ public class R<T> {
         this.requestId = MDC.get(Constant.REQUEST_ID_HEADER);
     }
 
-    public boolean success(){
+    public boolean success() {
         return code == SUCCESS;
     }
 
